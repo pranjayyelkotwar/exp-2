@@ -1,16 +1,38 @@
 import json
+import re
 
 
-def parse_response(response: str):
-
-    start = response.find("{")
-    end = response.rfind("}")
-
-    if start == -1 or end == -1:
-        return []
+def extract_paraphrases(text: str):
 
     try:
-        obj = json.loads(response[start:end + 1])
-        return obj["paraphrases"]
+
+        match = re.search(
+            r"\{.*\}",
+            text,
+            re.DOTALL,
+        )
+
+        if not match:
+            return []
+
+        obj = json.loads(match.group())
+
+        paras = obj.get(
+            "paraphrases",
+            []
+        )
+
+        cleaned = []
+
+        for p in paras:
+
+            if isinstance(p, str):
+                cleaned.append(
+                    p.strip()
+                )
+
+        return cleaned
+
     except Exception:
+
         return []

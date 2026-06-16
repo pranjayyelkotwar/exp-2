@@ -3,7 +3,7 @@ from core.storage import JsonlStorage
 from core.generator import ParaphraseGenerator
 
 
-MODEL_NAME = "meta-llama/Llama-3.2-1B"
+MODEL_NAME = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 
 QUESTION = """
 How can I improve the robustness of a retrieval-augmented generation system against noisy documents?
@@ -12,7 +12,9 @@ How can I improve the robustness of a retrieval-augmented generation system agai
 
 def main():
 
-    model = LlamaModel(MODEL_NAME)
+    model = LlamaModel(
+        MODEL_NAME
+    )
 
     storage = JsonlStorage(
         "paraphrases.jsonl"
@@ -22,10 +24,11 @@ def main():
         llm=model,
         storage=storage,
         target_size=250,
-        temperature=1.0,
     )
 
-    generator.run(QUESTION)
+    generator.run(
+        QUESTION
+    )
 
 
 if __name__ == "__main__":
